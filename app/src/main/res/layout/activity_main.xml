@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+<!--    個人資料列-->
+    <LinearLayout
+        android:id="@+id/personalline"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#CEEDCA"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        >
+        <at.markushi.ui.CircleButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/person"
+            app:cb_color="#CEEDCA"
+            app:cb_pressedRingWidth="1dip"
+            android:onClick="personalSetting"
+
+            />
+
+    </LinearLayout>
+
+<!--    頁面內容-->
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/setline"
+        android:layout_below="@+id/personalline"
+        />
+
+
+<!--    分隔線-->
+    <TextView
+        android:id="@+id/setline"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#9510100F"
+        android:layout_above="@+id/funcline"
+        />
+<!--    功能列表-->
+    <LinearLayout
+        android:id="@+id/funcline"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#CEEDCA"
+        >
+        <at.markushi.ui.CircleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:scaleType="center"
+            android:src="@drawable/home"
+            app:cb_color="#CEEDCA"
+            app:cb_pressedRingWidth="1dip"
+            android:onClick="homeBtn"
+            />
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/run"
+            app:cb_color="#CEEDCA"
+            app:cb_pressedRingWidth="1dp"
+            android:onClick="runBtn"
+            />
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/record"
+            app:cb_color="#CEEDCA"
+            app:cb_pressedRingWidth="1dip"
+            android:onClick="recordBtn"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
