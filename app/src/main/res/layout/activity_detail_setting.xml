@@ -75,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="xxxx@gmail.com"
+            android:onClick="email"
             />
     </LinearLayout>
     <TextView
@@ -98,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="下一頁"
+            android:onClick="unit"
             />
     </LinearLayout>
     <TextView

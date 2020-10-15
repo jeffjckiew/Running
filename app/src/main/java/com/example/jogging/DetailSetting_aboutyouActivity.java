@@ -19,6 +19,7 @@ public class DetailSetting_aboutyouActivity extends AppCompatActivity {
         showGender = findViewById(R.id.showgender);
         showTall = findViewById(R.id.showtall);
         showWeight = findViewById(R.id.showweight);
+
     }
 
     public void lastpage(View view) {

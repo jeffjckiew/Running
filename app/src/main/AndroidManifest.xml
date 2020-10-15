@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jogging">
+
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetailSetting_aboutyouActivity"></activity>
+        <activity android:name=".UnitofDistanceMainActivity"></activity>
+        <activity android:name=".DetailSetting_emailActivity" />
+        <activity android:name=".DetailSetting_aboutyouActivity" />
         <activity android:name=".DetailSettingActivity" />
         <activity android:name=".PersonalActivity" />
         <activity android:name=".MainActivity">

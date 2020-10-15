@@ -26,4 +26,14 @@ public class DetailSettingActivity extends AppCompatActivity {
         Intent intent = new Intent(this,DetailSetting_aboutyouActivity.class);
         startActivity(intent);
     }
+
+    public void email(View view) {
+        Intent intent = new Intent(this,DetailSetting_emailActivity.class);
+        startActivity(intent);
+    }
+
+    public void unit(View view) {
+        Intent intent = new Intent(this,UnitofDistanceMainActivity.class);
+        startActivity(intent);
+    }
 }
