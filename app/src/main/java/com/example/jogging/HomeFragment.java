@@ -1,5 +1,6 @@
 package com.example.jogging;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,6 +24,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
     private LinkedList<HashMap<String,String>> data;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,19 +51,31 @@ public class HomeFragment extends Fragment {
             row.put("title","Title:"+ran+"testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest");
             row.put("date","Date:"+ran);
             data.add(row);
-
         }
     }
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         class MyViewHolder extends RecyclerView.ViewHolder {
-            public View itemView;
-            public TextView title,date;
+            private Button item;
+            private View itemView;
+            private TextView title;
             public MyViewHolder(View v) {
                 super(v);
                 itemView = v;
                 title = itemView.findViewById(R.id.item_article);
+                item = (Button) itemView.findViewById(R.id.item);
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO
+//                        Toast objtoast = Toast.makeText(item.getContext(),"123", Toast.LENGTH_SHORT);
+//                        objtoast.show();
+                        Intent intent = new Intent(item.getContext(),DetailSettingActivity.class);
+                        startActivity(intent);
+                    }
+                });
             }
         }
+
         @NonNull
         @Override
         public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -66,6 +83,7 @@ public class HomeFragment extends Fragment {
                     .inflate(R.layout.home_item, parent, false);
             MyViewHolder vh = new MyViewHolder(itemView);
             return vh;
+
         }
         @Override
         public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, final int position) {
@@ -76,14 +94,12 @@ public class HomeFragment extends Fragment {
                     Log.v("hank","Click"+position);
                 }
             });
+
         }
         @Override
         public int getItemCount() {
             return data.size();
         }
     }
-
-
-
 
 }
