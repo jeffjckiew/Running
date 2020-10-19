@@ -5,19 +5,42 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PersonalActivity extends AppCompatActivity {
     AlertDialog.Builder objdbr;
     View v;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
+    private TextView showname,showarea,showmotto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal);
+        showname = findViewById(R.id.name);
+        showarea = findViewById(R.id.area);
+        showmotto = findViewById(R.id.motto);
+
+
+        sp = getSharedPreferences("jogging",MODE_PRIVATE);
+        editor = sp.edit();
+
+
+        String username = sp.getString("userName","姓名");
+        showname.setText(sp.getString("userName","姓名"));
+
+        String userarea = sp.getString("userArea","地區");
+        showarea.setText(sp.getString("userArea","地區"));
+
+        String usermotto = sp.getString("userMotto","座右銘");
+        showmotto.setText(sp.getString("userMotto","座右銘"));
     }
 
     //進入設定畫面
@@ -57,5 +80,12 @@ public class PersonalActivity extends AppCompatActivity {
     {
         Toast objtoast = Toast.makeText(this,"姓名:"+name+"地區:"+area+"座右銘:"+motto, Toast.LENGTH_SHORT);
         objtoast.show();
+        showname.setText(name);
+        showarea.setText(area);
+        showmotto.setText(motto);
+        editor.putString("userName",name);
+        editor.putString("userArea",area);
+        editor.putString("userMotto",motto);
+        editor.commit();
     }
 }
