@@ -28,10 +28,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        recyclerView = view.findViewById(R.id.recycleView);
+        recyclerView = view.findViewById(R.id.home_recycleView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         myAdapter = new MyAdapter();
@@ -49,7 +48,6 @@ public class HomeFragment extends Fragment {
             HashMap<String,String> row = new HashMap<>();
             int ran = (int)(Math.random()*100);
             row.put("title","Title:"+ran+"testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest");
-            row.put("date","Date:"+ran);
             data.add(row);
         }
     }
@@ -62,15 +60,12 @@ public class HomeFragment extends Fragment {
                 super(v);
                 itemView = v;
                 title = itemView.findViewById(R.id.item_article);
-                item = (Button) itemView.findViewById(R.id.item);
+                item = (Button) itemView.findViewById(R.id.homeitem);
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //TODO
-//                        Toast objtoast = Toast.makeText(item.getContext(),"123", Toast.LENGTH_SHORT);
-//                        objtoast.show();
-                        Intent intent = new Intent(item.getContext(),DetailSettingActivity.class);
-                        startActivity(intent);
+//                        由此處新增點選各項item後的內容顯示
                     }
                 });
             }

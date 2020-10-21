@@ -7,12 +7,14 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private HomeFragment home;
     private RunFragment run;
     private RecordFragment record;
+    private TextView showpagename;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,10 +23,11 @@ public class MainActivity extends AppCompatActivity {
         home = new HomeFragment();
         run = new RunFragment();
         record = new RecordFragment();
-
+        showpagename = findViewById(R.id.showpagename);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.container,home);
         transaction.commit();
+        showpagename.setText("主頁");
     }
 
     public void personalSetting(View view) {
@@ -34,18 +37,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void homeBtn(View view) {
+        showpagename.setText("主頁");
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container,home);
         transaction.commit();
     }
 
     public void runBtn(View view) {
+        showpagename.setText("跑步");
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container,run);
         transaction.commit();
+//        Intent intent = new Intent(this,MapsActivity.class);
+//        startActivity(intent);
     }
 
     public void recordBtn(View view) {
+        showpagename.setText("紀錄");
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container,record);
         transaction.commit();
