@@ -34,45 +34,52 @@
         android:background="#E3DADA"
         android:layout_below="@+id/topline"
         />
-<LinearLayout
-    android:id="@+id/myemail"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_below="@+id/underline"
-    >
+    <LinearLayout
+        android:id="@+id/myemail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/underline"
+        >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="目前的電子郵件為"
-        android:gravity="center"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="xxxx@gmail.com"
-        android:gravity="center"
-        />
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="目前的電子郵件為"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="xxxx@gmail.com"
+            android:gravity="center"
+            />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@+id/myemail">
-        
+
         <EditText
+            android:id="@+id/enter_email"
+            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
             android:layout_margin="20dp"
+            android:inputType="text"
             android:hint="新電子郵件帳號"/>
         <EditText
+            android:id="@+id/re_enter_email"
+            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
             android:layout_margin="20dp"
+            android:inputType="text"
             android:hint="新電子郵件帳號(確認)"/>
 
         <Button
@@ -83,7 +90,7 @@
             android:text="完成"
             android:onClick="checkmail"
             />
-        
+
     </LinearLayout>
 
 </RelativeLayout>
