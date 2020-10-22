@@ -36,7 +36,6 @@ public class DetailSetting_emailActivity extends AppCompatActivity {
 //        Log.v("brad",mail);
         email.setText(sp.getString("email","xxx@gmail.com"));
 
-
     }
 
     public void lastpage(View view) {
@@ -49,7 +48,7 @@ public class DetailSetting_emailActivity extends AppCompatActivity {
         //在此判斷email是否相同 相同的話存入資料表中
 
         if (!isEmailValid(email1)){
-            Toast.makeText(DetailSetting_emailActivity.this, "Your Email Id is Invalid.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DetailSetting_emailActivity.this, "請輸入E-Mail格式", Toast.LENGTH_SHORT).show();
             finish();
         }else {
             if (email1.equals(email2)) {

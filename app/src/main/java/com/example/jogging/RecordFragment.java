@@ -38,6 +38,7 @@ public class RecordFragment extends Fragment {
         return view;
     }
     private void doData(){
+        //在這邊抓取資料 並塞入data中
         data = new LinkedList<>();
         for(int i = 0; i<5;i++){
             HashMap<String,String> row = new HashMap<>();
