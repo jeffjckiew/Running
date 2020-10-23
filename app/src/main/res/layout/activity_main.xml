@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<!--    個人資料列-->
+    <!--    個人資料列-->
     <LinearLayout
         android:id="@+id/personalline"
         android:layout_width="match_parent"
@@ -32,7 +32,9 @@
 
     </LinearLayout>
 
-<!--    頁面內容-->
+
+
+    <!--    頁面內容-->
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -42,7 +44,7 @@
         />
 
 
-<!--    分隔線-->
+    <!--    分隔線-->
     <TextView
         android:id="@+id/setline"
         android:layout_width="match_parent"
@@ -50,7 +52,7 @@
         android:background="#9510100F"
         android:layout_above="@+id/funcline"
         />
-<!--    功能列表-->
+    <!--    功能列表-->
     <LinearLayout
         android:id="@+id/funcline"
         android:layout_width="match_parent"

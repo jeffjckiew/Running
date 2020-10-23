@@ -1,11 +1,16 @@
 package com.example.jogging;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private RunFragment run;
     private RecordFragment record;
     private TextView showpagename;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.container,home);
         transaction.commit();
-        showpagename.setText("主頁");
+        showpagename.setText("飲食紀錄");
+
     }
 
     public void personalSetting(View view) {
@@ -37,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void homeBtn(View view) {
-        showpagename.setText("主頁");
+        showpagename.setText("飲食紀錄");
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container,home);
         transaction.commit();
@@ -58,4 +66,8 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.container,record);
         transaction.commit();
     }
+
+//    public void addition(View view) {
+//        // 這裡按了之後，新增每日紀錄
+//    }
 }
