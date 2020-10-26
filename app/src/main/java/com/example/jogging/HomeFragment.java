@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -30,6 +32,7 @@ public class HomeFragment extends Fragment {
     AlertDialog.Builder objdbr;
     private  MainActivity mainActivity;
     View v;
+    private FloatingActionButton addrecord;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,10 +41,39 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = view.findViewById(R.id.home_recycleView);
         recyclerView.setHasFixedSize(true);
+        addrecord = (FloatingActionButton)view.findViewById(R.id.btn_addrecordoffood);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         myAdapter = new MyAdapter();
         doData();
         recyclerView.setAdapter(myAdapter);
+        addrecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast objtoast = Toast.makeText(mainActivity,"早餐:", Toast.LENGTH_SHORT);
+                objtoast.show();
+                objdbr = new AlertDialog.Builder(mainActivity);
+                LayoutInflater inflater = LayoutInflater.from(mainActivity);
+                v = inflater.inflate(R.layout.homepage_dialog,null);
+                objdbr.setTitle("請輸入您的飲食資料：");
+
+                objdbr.setView(v);
+
+                final View finalV = v;
+                objdbr.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //回傳輸入的值，再用Toast顯示。
+                        EditText breakfast = (EditText)(finalV.findViewById(R.id.breakfast));
+                        EditText lunch =(EditText)(finalV.findViewById(R.id.lunch));
+                        EditText dinner =(EditText)(finalV.findViewById(R.id.dinner));
+                        EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
+                        myAdapter.prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
+                    }
+                }).show();
+
+
+            }
+        });
         return view;
     }
 
@@ -134,5 +166,6 @@ public class HomeFragment extends Fragment {
             return 0;
         }
     }
+
 
 }
