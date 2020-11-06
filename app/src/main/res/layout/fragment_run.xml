@@ -30,6 +30,7 @@
             android:text="平均速度:"
             android:textSize="25dp" />
         <TextView
+            android:id="@+id/runspeed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0"
@@ -47,9 +48,10 @@
             android:text="距離:"
             android:textSize="25dp"/>
         <TextView
+            android:id="@+id/rundistance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="0.00公里"
             android:textSize="25dp"/>
         <TextView
             android:layout_width="match_parent"
@@ -73,7 +75,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="繼續"/>
+                android:text="開始"/>
+
+            <Button
+                android:id="@+id/btn_finishrun"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="完成"/>
 
         </LinearLayout>
 

@@ -6,21 +6,21 @@
     >
 
     <EditText
-        android:id="@+id/name"
+        android:id="@+id/dialog_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="姓名"
         />
 
     <EditText
-        android:id="@+id/area"
+        android:id="@+id/dialog_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="地區"
         />
 
     <EditText
-        android:id="@+id/motto"
+        android:id="@+id/dialog_motto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="座右銘"

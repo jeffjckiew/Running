@@ -69,6 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 gMap.setMyLocationEnabled(true);
 
             LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+//            lm.requestLocationUpdates();
             Location myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             if (myLocation == null) {
