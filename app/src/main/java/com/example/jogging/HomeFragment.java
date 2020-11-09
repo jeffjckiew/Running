@@ -1,10 +1,12 @@
 package com.example.jogging;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,38 +16,61 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
-    private LinkedList<HashMap<String,String>> data;
+    private List<PostModel> postList;
     AlertDialog.Builder objdbr;
     private  MainActivity mainActivity;
-    View v;
     private FloatingActionButton addrecord;
+    private JSONArray result;
+    View view;
+    public HomeFragment(){
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        addrecord = (FloatingActionButton)view.findViewById(R.id.btn_addrecordoffood);
+
+
         recyclerView = view.findViewById(R.id.home_recycleView);
         recyclerView.setHasFixedSize(true);
-        addrecord = (FloatingActionButton)view.findViewById(R.id.btn_addrecordoffood);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        myAdapter = new MyAdapter();
-        doData();
-        recyclerView.setAdapter(myAdapter);
+        postList = new ArrayList<>();
+        getData();
+
+
         addrecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,28 +103,90 @@ public class HomeFragment extends Fragment {
     }
 
 
+    private void getData(){
+//        192.168.1.235
 
-
-    private void doData(){
         //在這邊抓取資料 並塞入data中
-        data = new LinkedList<>();
-        for(int i = 0; i<5;i++){
-            HashMap<String,String> row = new HashMap<>();
-            int ran = (int)(Math.random()*100);
-            row.put("title","Title:"+ran+"testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest");
-            data.add(row);
-        }
+        RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
+        String url = "http://10.0.102.244:8080/jogging-jdbc/test.jsp";
+        StringRequest jsonArrayRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                JSONObject j = null;
+                Document html = Jsoup.parse(response);
+                Element body = html.body();
+                String b = body.toString().replaceAll("<.*>","").trim();
+                Log.d("tag",b);
+
+
+                try {
+                    j = new JSONObject(new String(b.getBytes(),"UTF-8"));
+                    Log.d("tag",j.toString());
+                    result = j.getJSONArray("diet_record");
+                    Log.d("tag",result.toString());
+                    for (int i = 0; i < result.length(); i++) {
+
+                        JSONObject jsonObject = result.getJSONObject(i);
+
+                        PostModel postModel = new PostModel();
+                        postModel.setBreakfast(jsonObject.getString("breakfast"));
+                        postModel.setLunch(jsonObject.getString("lunch"));
+                        postModel.setDinner(jsonObject.getString("dinner"));
+                        postModel.setExtra(jsonObject.getString("extra"));
+                        postList.add(postModel);
+
+                        Log.d("tag","" + jsonObject.getString("breakfast"));
+                        Log.v("tag", "" + i);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                myAdapter = new MyAdapter(getActivity().getApplicationContext(),postList);
+                recyclerView.setAdapter(myAdapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag","onErrorResponse: " + error.getMessage());
+            }
+        });
+
+        queue.add(jsonArrayRequest);
+
+
     }
+
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
-        class MyViewHolder extends RecyclerView.ViewHolder {
+
+        Context mContext;
+        List<PostModel> postList;
+
+        public MyAdapter(Context mContext, List<PostModel> postList) {
+            this.mContext = mContext;
+            this.postList = postList;
+        }
+
+
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
             private Button item;
             private View itemView;
-            private TextView title;
+            private TextView title,breakfast,lunch,dinner,extra;
+
+
+
             public MyViewHolder(View v) {
                 super(v);
                 itemView = v;
-                title = itemView.findViewById(R.id.item_article);
+//                title = (TextView)itemView.findViewById(R.id.item_article);
                 item = (Button) itemView.findViewById(R.id.homeitem);
+                breakfast = (TextView) itemView.findViewById(R.id.item_breakfast);
+                lunch = (TextView)itemView.findViewById(R.id.item_lunch);
+                dinner = (TextView)itemView.findViewById(R.id.item_dinner);
+                extra = (TextView)itemView.findViewById(R.id.item_extrafood);
+
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -107,7 +194,7 @@ public class HomeFragment extends Fragment {
 //                        由此處新增點選各項item後的內容顯示
                         objdbr = new AlertDialog.Builder(mainActivity);
                         LayoutInflater inflater = LayoutInflater.from(mainActivity);
-                         v = inflater.inflate(R.layout.homepage_dialog,null);
+                        v = inflater.inflate(R.layout.homepage_dialog,null);
                         objdbr.setTitle("請輸入您的飲食資料：");
 
                         objdbr.setView(v);
@@ -140,31 +227,38 @@ public class HomeFragment extends Fragment {
         @NonNull
         @Override
         public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.home_item, parent, false);
-            MyViewHolder vh = new MyViewHolder(itemView);
-            return vh;
+
+            View v = LayoutInflater.from(mainActivity).inflate(R.layout.home_item, parent, false);
+            MyViewHolder vHolder = new MyViewHolder(v);
+            return vHolder;
 
         }
         @Override
         public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, final int position) {
 
             //在這邊抓取資料內容
-            holder.title.setText(data.get(position).get("title"));
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.v("hank","Click"+position);
-                }
-            });
+//            holder.title.setText(postList.get(position).getBreakfast());
+
+            Log.d("tag",postList.get(position).getBreakfast());
+            holder.breakfast.setText("早餐: " + postList.get(position).getBreakfast());
+            holder.lunch.setText("午餐: " + postList.get(position).getLunch());
+            holder.dinner.setText("晚餐: " + postList.get(position).getDinner());
+            holder.extra.setText("額外飲食: " + postList.get(position).getExtra());
+
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.v("hank","Click"+position);
+//                }
+//            });
 
         }
         @Override
         public int getItemCount() {
             //在這邊抓取資料筆數
-            if(data!=null){return data.size();}
-            return 0;
+            return postList.size();
         }
+
     }
 
 

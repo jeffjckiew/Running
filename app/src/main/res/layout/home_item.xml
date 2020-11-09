@@ -7,8 +7,36 @@
     android:orientation="horizontal"
     android:background="@drawable/homeitem_underline"
     >
+
     <TextView
-        android:id="@+id/item_article"
+        android:id="@+id/item_breakfast"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:maxLines="4"
+        android:textSize="24dp" />
+
+    <TextView
+        android:id="@+id/item_lunch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="24dp"
+        android:gravity="left"
+        android:maxLines="4"
+        />
+    <TextView
+        android:id="@+id/item_dinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="24dp"
+        android:gravity="left"
+        android:maxLines="4"
+        />
+    <TextView
+        android:id="@+id/item_extrafood"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
