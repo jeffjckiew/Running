@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -88,12 +90,23 @@ public class RunFragment extends Fragment {
             }
         });
 
+        //結束跑步
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnContinue.setText("開始");
                 btnContinue.setEnabled(true);
                 showAllDetailDialog(view);
+                if(timetask!=null){
+                    timetask.cancel();
+                    timetask=null;
+                }
+                //將所有計算歸零
+                ss=0;
+                showtime.setText("00:00:00");
+                startRun=false;
+                distance.setText("0.00公里");
+                speed.setText("0");
             }
         });
 
@@ -106,23 +119,30 @@ public class RunFragment extends Fragment {
 
         //取得自訂的版面。
         LayoutInflater inflater = LayoutInflater.from(mainActivity);
-        final View v = inflater.inflate(R.layout.personal_dialog,null);
-
-        objdbr.setTitle("請輸入您的資料：");
-        EditText name = (EditText)(v.findViewById(R.id.dialog_name));
-        EditText area =(EditText)(v.findViewById(R.id.dialog_area));
-        EditText motto =(EditText)(v.findViewById(R.id.dialog_motto));
-
-
+        final View v = inflater.inflate(R.layout.runinfo_dialog,null);
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH)+1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        objdbr.setTitle("本次跑步資訊如下");
+        TextView rundate = (TextView)(v.findViewById(R.id.dialog_rundate));
+        rundate.setText("紀錄日期"+year+"年"+month+"月"+day+"日");
+        TextView rundistance =(TextView)(v.findViewById(R.id.dialog_rundistance));
+        rundistance.setText(distance.getText());
+        TextView runspeed =(TextView)(v.findViewById(R.id.dialog_runspeed));
+        runspeed.setText("平均配速:"+speed.getText());
+        TextView runtime =(TextView)(v.findViewById(R.id.dialog_runtime));
+        runtime.setText("總花費時間:"+showtime.getText());
         //設定AlertDialog的View。
         objdbr.setView(v);
         objdbr.setPositiveButton("確定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //回傳輸入的值，再用Toast顯示。
-                EditText name = (EditText)(v.findViewById(R.id.dialog_name));
-                EditText area =(EditText)(v.findViewById(R.id.dialog_area));
-                EditText motto =(EditText)(v.findViewById(R.id.dialog_motto));
+                //在這邊將跑步資訊存入資料庫
+//                TextView rundate = (TextView)(v.findViewById(R.id.dialog_rundate));
+//                TextView rundistance =(TextView)(v.findViewById(R.id.dialog_rundistance));
+//                TextView runspeed =(TextView)(v.findViewById(R.id.dialog_runspeed));
+//                TextView runtime =(TextView)(v.findViewById(R.id.dialog_runtime));
 //                prc_showmessage(name.getText().toString(),area.getText().toString(),motto.getText().toString());
             }
         }).show();
@@ -167,7 +187,7 @@ public class RunFragment extends Fragment {
         }
     }
 
-
+    //此處開始計算距離及跑步速度
     private SensorEventListener SL = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {

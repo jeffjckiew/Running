@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/dialog_rundate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="日期"
+        />
+
+    <TextView
+        android:id="@+id/dialog_rundistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="公里數"
+        />
+
+    <TextView
+        android:id="@+id/dialog_runspeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="平均配速"
+        />
+    <TextView
+        android:id="@+id/dialog_runtime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="總花費時間"
+        />
+
+
+</LinearLayout>
