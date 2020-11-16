@@ -196,6 +196,7 @@ public class HomeFragment extends Fragment {
                                 EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
                                 prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
                                 updatefoods((String) dialogid.getText(),breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
+
                             }
                         }).show();
                     }
@@ -237,7 +238,7 @@ public class HomeFragment extends Fragment {
         objtoast.show();
         //在此處將飲食紀錄存入
     }
-    public void updatefoods(String dialogid,String breakfast,String lunch,String dinner,String extra)
+    public void updatefoods(final String dialogid, final String breakfast, final String lunch, final String dinner, final String extra)
     {
         //在此處將飲食紀錄存入
         String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/update/"+ dialogid;
@@ -250,14 +251,13 @@ public class HomeFragment extends Fragment {
                     try {
                         j = response.getJSONObject(i);
                         PostModel postModel = new PostModel();
-                        postModel.setId(Integer.parseInt(j.getString("id")));
                         postModel.setDate(j.getString("date"));
-                        postModel.setBreakfast(j.getString("breakfast"));
-                        postModel.setLunch(j.getString("lunch"));
-                        postModel.setDinner(j.getString("dinner"));
-                        postModel.setExtra(j.getString("extra"));
+                        postModel.setBreakfast("egg");
+                        postModel.setLunch("egg");
+                        postModel.setDinner("egg");
+                        postModel.setExtra("egg");
                         postList.add(postModel);
-
+                        Log.v("hank",postList.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
