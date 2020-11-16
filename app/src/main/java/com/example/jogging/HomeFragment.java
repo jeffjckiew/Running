@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
     private FloatingActionButton addrecord;
     private JSONArray result;
     View view;
+
     public HomeFragment(){
     }
 
@@ -63,8 +64,6 @@ public class HomeFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         view = inflater.inflate(R.layout.fragment_home, container, false);
         addrecord = (FloatingActionButton)view.findViewById(R.id.btn_addrecordoffood);
-
-
         recyclerView = view.findViewById(R.id.home_recycleView);
         recyclerView.setHasFixedSize(true);
         postList = new ArrayList<>();
@@ -74,8 +73,6 @@ public class HomeFragment extends Fragment {
         addrecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast objtoast = Toast.makeText(mainActivity,"早餐:", Toast.LENGTH_SHORT);
-                objtoast.show();
                 objdbr = new AlertDialog.Builder(mainActivity);
                 LayoutInflater inflater = LayoutInflater.from(mainActivity);
                 v = inflater.inflate(R.layout.homepage_dialog,null);
@@ -92,7 +89,7 @@ public class HomeFragment extends Fragment {
                         EditText lunch =(EditText)(finalV.findViewById(R.id.lunch));
                         EditText dinner =(EditText)(finalV.findViewById(R.id.dinner));
                         EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
-                        myAdapter.prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
+                        prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
                     }
                 }).show();
 
@@ -103,60 +100,46 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void getData(){
-//        192.168.1.235
-
-        //在這邊抓取資料 並塞入data中
+    private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String url = "http://10.0.102.244:8080/jogging-jdbc/test.jsp";
-        StringRequest jsonArrayRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/diet.record" ;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
-
-                JSONObject j = null;
-                Document html = Jsoup.parse(response);
-                Element body = html.body();
-                String b = body.toString().replaceAll("<.*>","").trim();
-                Log.d("tag",b);
-
-
-                try {
-                    j = new JSONObject(new String(b.getBytes(),"UTF-8"));
-                    Log.d("tag",j.toString());
-                    result = j.getJSONArray("diet_record");
-                    Log.d("tag",result.toString());
-                    for (int i = 0; i < result.length(); i++) {
-
-                        JSONObject jsonObject = result.getJSONObject(i);
-
+            public void onResponse(JSONArray response) {
+                for(int i = 0; i< response.length(); i++){
+                    JSONObject j = null;
+                    try {
+                        j = response.getJSONObject(i);
                         PostModel postModel = new PostModel();
-                        postModel.setBreakfast(jsonObject.getString("breakfast"));
-                        postModel.setLunch(jsonObject.getString("lunch"));
-                        postModel.setDinner(jsonObject.getString("dinner"));
-                        postModel.setExtra(jsonObject.getString("extra"));
+                        postModel.setId(Integer.parseInt(j.getString("id")));
+                        postModel.setDate(j.getString("date"));
+                        postModel.setBreakfast(j.getString("breakfast"));
+                        postModel.setLunch(j.getString("lunch"));
+                        postModel.setDinner(j.getString("dinner"));
+                        postModel.setExtra(j.getString("extra"));
                         postList.add(postModel);
 
-                        Log.d("tag","" + jsonObject.getString("breakfast"));
-                        Log.v("tag", "" + i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
                 myAdapter = new MyAdapter(getActivity().getApplicationContext(),postList);
                 recyclerView.setAdapter(myAdapter);
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("tag","onErrorResponse: " + error.getMessage());
+                Log.d("tag","onErrorResponse"+error.getMessage());
             }
         });
 
         queue.add(jsonArrayRequest);
 
-
     }
+
+
 
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
@@ -171,9 +154,9 @@ public class HomeFragment extends Fragment {
 
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            private Button item;
+            private FloatingActionButton item;
             private View itemView;
-            private TextView title,breakfast,lunch,dinner,extra;
+            private TextView breakfast,lunch,dinner,extra,id;
 
 
 
@@ -181,7 +164,8 @@ public class HomeFragment extends Fragment {
                 super(v);
                 itemView = v;
 //                title = (TextView)itemView.findViewById(R.id.item_article);
-                item = (Button) itemView.findViewById(R.id.homeitem);
+                item = itemView.findViewById(R.id.homeitem);
+                id=(TextView) itemView.findViewById(R.id.item_id);
                 breakfast = (TextView) itemView.findViewById(R.id.item_breakfast);
                 lunch = (TextView)itemView.findViewById(R.id.item_lunch);
                 dinner = (TextView)itemView.findViewById(R.id.item_dinner);
@@ -195,7 +179,7 @@ public class HomeFragment extends Fragment {
                         objdbr = new AlertDialog.Builder(mainActivity);
                         LayoutInflater inflater = LayoutInflater.from(mainActivity);
                         v = inflater.inflate(R.layout.homepage_dialog,null);
-                        objdbr.setTitle("請輸入您的飲食資料：");
+                        objdbr.setTitle("更新飲食資料：");
 
                         objdbr.setView(v);
 
@@ -204,11 +188,14 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //回傳輸入的值，再用Toast顯示。
+                                TextView dialogid = (TextView) (finalV.findViewById(R.id.dialogid));
+                                dialogid.setText(id.getText());
                                 EditText breakfast = (EditText)(finalV.findViewById(R.id.breakfast));
                                 EditText lunch =(EditText)(finalV.findViewById(R.id.lunch));
                                 EditText dinner =(EditText)(finalV.findViewById(R.id.dinner));
                                 EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
                                 prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
+                                updatefoods((String) dialogid.getText(),breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
                             }
                         }).show();
                     }
@@ -216,12 +203,7 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        public void prc_showmessage(String breakfast,String lunch,String dinner,String extra)
-        {
-            Toast objtoast = Toast.makeText(mainActivity,"早餐:"+breakfast+"午餐:"+lunch+"晚餐:"+dinner+"額外飲食:"+extra, Toast.LENGTH_SHORT);
-            objtoast.show();
-            //在此處將飲食紀錄存入
-        }
+
 
 
         @NonNull
@@ -235,23 +217,12 @@ public class HomeFragment extends Fragment {
         }
         @Override
         public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, final int position) {
-
-            //在這邊抓取資料內容
-//            holder.title.setText(postList.get(position).getBreakfast());
-
             Log.d("tag",postList.get(position).getBreakfast());
+            holder.id.setText(postList.get(position).getId()+"");
             holder.breakfast.setText("早餐: " + postList.get(position).getBreakfast());
             holder.lunch.setText("午餐: " + postList.get(position).getLunch());
             holder.dinner.setText("晚餐: " + postList.get(position).getDinner());
-            holder.extra.setText("額外飲食: " + postList.get(position).getExtra());
-
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.v("hank","Click"+position);
-//                }
-//            });
-
+            holder.extra.setText("額外: " + postList.get(position).getExtra());
         }
         @Override
         public int getItemCount() {
@@ -260,6 +231,50 @@ public class HomeFragment extends Fragment {
         }
 
     }
+    public void prc_showmessage(String breakfast,String lunch,String dinner,String extra)
+    {
+        Toast objtoast = Toast.makeText(mainActivity,"早餐:"+breakfast+"午餐:"+lunch+"晚餐:"+dinner+"額外飲食:"+extra, Toast.LENGTH_SHORT);
+        objtoast.show();
+        //在此處將飲食紀錄存入
+    }
+    public void updatefoods(String dialogid,String breakfast,String lunch,String dinner,String extra)
+    {
+        //在此處將飲食紀錄存入
+        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/update/"+ dialogid;
+        RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.PUT, JSON_URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for(int i = 0; i< response.length(); i++){
+                    JSONObject j = null;
+                    try {
+                        j = response.getJSONObject(i);
+                        PostModel postModel = new PostModel();
+                        postModel.setId(Integer.parseInt(j.getString("id")));
+                        postModel.setDate(j.getString("date"));
+                        postModel.setBreakfast(j.getString("breakfast"));
+                        postModel.setLunch(j.getString("lunch"));
+                        postModel.setDinner(j.getString("dinner"));
+                        postModel.setExtra(j.getString("extra"));
+                        postList.add(postModel);
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                myAdapter = new MyAdapter(getActivity().getApplicationContext(),postList);
+                recyclerView.setAdapter(myAdapter);
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag","onErrorResponse"+error.getMessage());
+            }
+        });
+
+        queue.add(jsonArrayRequest);
+
+    }
 }

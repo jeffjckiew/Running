@@ -47,21 +47,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.addCircle(new CircleOptions().center(sydney).radius(300).strokeColor(Color.RED).fillColor(Color.RED));
-//        mMap.getMyLocation();
-//        Circle circle =  mMap.addCircle(new CircleOptions()
-//                .center(new LatLng(-34, 158))
-//                .radius(1000)
-//                .strokeColor(Color.RED)
-//                .fillColor(Color.rgb(255,255,255)));
-
-
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }else{
@@ -69,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 gMap.setMyLocationEnabled(true);
 
             LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-//            lm.requestLocationUpdates();
+
             Location myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             if (myLocation == null) {
@@ -87,7 +72,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 //                gMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
                 gMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(),myLocation.getLongitude()) , 20.0f) );
-
             }
         }
 

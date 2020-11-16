@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -59,14 +61,14 @@ public class RecordFragment extends Fragment {
 
     private class MyAdapter extends RecyclerView.Adapter<RecordFragment.MyAdapter.MyViewHolder>{
         class MyViewHolder extends RecyclerView.ViewHolder {
-            private Button item;
+            private FloatingActionButton item;
             private View itemView;
             private TextView title;
             public MyViewHolder(View v) {
                 super(v);
                 itemView = v;
                 title = itemView.findViewById(R.id.item_record);
-                item = (Button) itemView.findViewById(R.id.record);
+                item = (FloatingActionButton) itemView.findViewById(R.id.record);
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -77,7 +79,7 @@ public class RecordFragment extends Fragment {
                         objdbr = new AlertDialog.Builder(mainActivity);
                         LayoutInflater inflater = LayoutInflater.from(mainActivity);
                         v = inflater.inflate(R.layout.record_dialog,null);
-                        objdbr.setTitle("請輸入您的飲食資料：");
+                        objdbr.setTitle("此次跑步詳細資訊如下：");
 
                         objdbr.setView(v);
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:background="@drawable/homeitem_underline">
     <TextView
@@ -15,13 +15,23 @@
         android:maxLines="4"
         />
 
-    <Button
+<!--    <Button-->
+<!--        android:id="@+id/record"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="查看紀錄"-->
+<!--        android:gravity="right"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:onClick="item"-->
+<!--        />-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="查看紀錄"
-        android:gravity="right"
-        android:layout_gravity="bottom"
-        android:onClick="item"
-        />
+        app:backgroundTint="#E4E4E4"
+        app:pressedTranslationZ="@dimen/cardview_compat_inset_shadow"
+        app:srcCompat="@drawable/morebtn"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"/>
 </LinearLayout>

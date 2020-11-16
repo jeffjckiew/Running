@@ -7,6 +7,11 @@
     tools:context=".RecordFragment"
     android:id="@+id/recordpage">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="104dp"
+        android:src="@drawable/recordbg" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/record_recycleView"
         android:layout_width="match_parent"

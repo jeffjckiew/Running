@@ -13,7 +13,7 @@ public class WelcomeActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        mHandler.sendEmptyMessageDelayed(GOTO_MAIN_ACTIVITY, 2000); //2秒跳轉
+        mHandler.sendEmptyMessageDelayed(GOTO_MAIN_ACTIVITY, 3000); //2秒跳轉
     }
     private static final int GOTO_MAIN_ACTIVITY = 0;
     private Handler mHandler = new Handler() {

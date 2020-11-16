@@ -4,38 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#FFFFFF">
 
     <!--    個人資料列-->
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:id="@+id/personalline"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#CEEDCA"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
         >
-        <at.markushi.ui.CircleButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/person"
-            app:cb_color="#CEEDCA"
-            app:cb_pressedRingWidth="1dip"
-            android:onClick="personalSetting"
-
-            />
-        <TextView
-            android:id="@+id/showpagename"
+        <ImageButton
+            android:id="@+id/personlSet_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"/>
+            android:src="@drawable/person"
+            android:background="#FFFFFF"
+            android:layout_marginLeft="10dp"
 
+            />
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--            android:id="@+id/personlSet_btn"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:src="@drawable/person"-->
+<!--            app:civ_border_width="1dp"-->
+<!--            app:civ_border_color="#A3A3A3"/>-->
     </LinearLayout>
 
 
 
     <!--    頁面內容-->
     <FrameLayout
+        android:layout_marginTop="20dp"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,7 +54,7 @@
     <TextView
         android:id="@+id/setline"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:background="#9510100F"
         android:layout_above="@+id/funcline"
         />
@@ -56,44 +62,40 @@
     <LinearLayout
         android:id="@+id/funcline"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="#CEEDCA"
+        android:background="#FFFFFF"
         >
-        <at.markushi.ui.CircleButton
+        <ImageButton
+            android:id="@+id/home_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:scaleType="center"
-            android:src="@drawable/home"
-            app:cb_color="#CEEDCA"
-            app:cb_pressedRingWidth="1dip"
-            android:onClick="homeBtn"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/home1"
+            android:background="#FFFFFF"
             />
 
-        <at.markushi.ui.CircleButton
+        <ImageButton
+            android:id="@+id/run_btn"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:layout_height="wrap_content"
             android:src="@drawable/run"
-            app:cb_color="#CEEDCA"
-            app:cb_pressedRingWidth="1dp"
-            android:onClick="runBtn"
+            android:background="#FFFFFF"
             />
 
-        <at.markushi.ui.CircleButton
+        <ImageButton
+            android:id="@+id/record_btn"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:src="@drawable/record"
-            app:cb_color="#CEEDCA"
-            app:cb_pressedRingWidth="1dip"
-            android:onClick="recordBtn"
+            android:background="#FFFFFF"
             />
-
     </LinearLayout>
 
 </RelativeLayout>

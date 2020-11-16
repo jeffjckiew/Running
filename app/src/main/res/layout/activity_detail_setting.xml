@@ -7,39 +7,42 @@
     tools:context=".DetailSettingActivity"
     android:orientation="vertical"
     >
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageButton
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="上一頁"
-            android:onClick="lastpage"/>
+        android:background="@drawable/turnback"
+        android:onClick="lastpage"
+        />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="設定"
             android:textSize="30dp"
-            android:layout_marginLeft="80dp"
+            android:layout_gravity="center"
             />
-    </LinearLayout>
     <TextView
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:background="#E3DADA"
         />
 
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
   <LinearLayout
+      android:layout_marginHorizontal="10dp"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="3"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      android:onClick="aboutYou"
+      >
     <TextView
         android:layout_width="0dp"
         android:layout_weight="5"
@@ -47,23 +50,27 @@
         android:text="關於你"
         android:textSize="25dp"/>
 
-      <Button
+      <ImageButton
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="下一頁"
+          android:background="@drawable/turnnext"
+          android:layout_gravity="center"
           android:onClick="aboutYou"
           />
   </LinearLayout>
     <TextView
+        android:layout_marginVertical="10dp"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:background="#E3DADA"
         />
     <LinearLayout
+        android:layout_marginHorizontal="10dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:onClick="email">
         <TextView
             android:layout_width="0dp"
             android:layout_weight="5"
@@ -75,39 +82,14 @@
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="xxxx@gmail.com"
-            android:onClick="email"
+
             />
     </LinearLayout>
     <TextView
+        android:layout_marginVertical="10dp"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:background="#E3DADA"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:layout_height="wrap_content"
-            android:text="測量單位"
-            android:textSize="25dp"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="下一頁"
-            android:onClick="unit"
-            />
-    </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="#E3DADA"
-        />
-
     </LinearLayout>
 </LinearLayout>

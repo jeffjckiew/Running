@@ -8,12 +8,20 @@
     tools:context=".HomeFragment"
     android:id="@+id/homepage">
 
+    <ImageView
+        android:id="@+id/homebg"
+        android:layout_width="wrap_content"
+        android:layout_height="104dp"
+        android:layout_gravity="top"
+        android:src="@drawable/homebg" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_addrecordoffood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        app:backgroundTint="#E4E4E4"
         android:clickable="true"
         app:pressedTranslationZ="@dimen/cardview_compat_inset_shadow"
         app:srcCompat="@drawable/addition" />
@@ -22,6 +30,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_recycleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

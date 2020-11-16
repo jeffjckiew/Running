@@ -46,8 +46,4 @@ public class DetailSettingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void unit(View view) {
-        Intent intent = new Intent(this,UnitofDistanceMainActivity.class);
-        startActivity(intent);
-    }
 }
