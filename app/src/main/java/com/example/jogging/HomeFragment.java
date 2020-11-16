@@ -96,6 +96,7 @@ public class HomeFragment extends Fragment {
                         EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
                         prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
                         addFoods(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
+                        mainActivity.reload(HomeFragment.this);
                     }
                 }).show();
 
@@ -149,11 +150,11 @@ public class HomeFragment extends Fragment {
 
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
-        Context mContext;
+//        Context mContext;
         List<PostModel> postList;
 
         public MyAdapter(Context mContext, List<PostModel> postList) {
-            this.mContext = mContext;
+//            this.mContext = mContext;
             this.postList = postList;
         }
 
@@ -203,7 +204,7 @@ public class HomeFragment extends Fragment {
                                 EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
                                 prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
                                 updateFoods((String) dialogid.getText(),breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
-
+                                mainActivity.reload(HomeFragment.this);
                             }
 
                         }).show();
@@ -213,6 +214,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         deletFoods((String) id.getText());
+                        mainActivity.reload(HomeFragment.this);
                     }
                 });
 
@@ -233,7 +235,6 @@ public class HomeFragment extends Fragment {
         }
         @Override
         public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, final int position) {
-            Log.d("tag",postList.get(position).getBreakfast());
             holder.id.setText(postList.get(position).getId()+"");
             holder.breakfast.setText("早餐: " + postList.get(position).getBreakfast());
             holder.lunch.setText("午餐: " + postList.get(position).getLunch());
@@ -281,7 +282,7 @@ public class HomeFragment extends Fragment {
             }
         });
         queue.add(jsonObjectRequest);
-        mainActivity.recreate();
+
             }
 
     public void addFoods(final String breakfast,
@@ -312,7 +313,7 @@ public class HomeFragment extends Fragment {
             }
         });
         queue.add(jsonObjectRequest);
-        mainActivity.recreate();
+
     }
 
     public void deletFoods(String id) {
@@ -332,7 +333,7 @@ public class HomeFragment extends Fragment {
             }
         });
         queue.add(jsonObjectRequest);
-        mainActivity.recreate();
+
     }
 
 
