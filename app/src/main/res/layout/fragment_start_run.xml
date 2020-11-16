@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".StartRunFragment">
+
+    <ImageView
+        android:id="@+id/homebg"
+        android:layout_width="wrap_content"
+        android:layout_height="104dp"
+        android:layout_gravity="top"
+        android:src="@drawable/runbg"
+        android:layout_marginBottom="100dp"/>
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/gotoRun"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        app:cb_color="#636363"
+        android:src="@drawable/startbtn"
+        app:cb_pressedRingWidth="16dip"
+        android:layout_gravity="center"
+        android:clickable="true"
+        />
+
+</LinearLayout>
