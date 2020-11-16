@@ -252,19 +252,19 @@ public class HomeFragment extends Fragment {
                         j = response.getJSONObject(i);
                         PostModel postModel = new PostModel();
                         postModel.setDate(j.getString("date"));
-                        postModel.setBreakfast("egg");
-                        postModel.setLunch("egg");
-                        postModel.setDinner("egg");
-                        postModel.setExtra("egg");
+                        postModel.setBreakfast(j.put("breakfast",breakfast));
+                        postModel.setLunch(j.getString("lunch"));
+                        postModel.setDinner(j.getString("dinner"));
+                        postModel.setExtra(j.getString("extra"));
                         postList.add(postModel);
                         Log.v("hank",postList.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-                myAdapter = new MyAdapter(getActivity().getApplicationContext(),postList);
-                recyclerView.setAdapter(myAdapter);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+//                myAdapter = new MyAdapter(getActivity().getApplicationContext(),postList);
+//                recyclerView.setAdapter(myAdapter);
 
             }
         }, new Response.ErrorListener() {
