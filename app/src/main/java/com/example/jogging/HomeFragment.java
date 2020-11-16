@@ -24,11 +24,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,7 +44,9 @@ import org.jsoup.nodes.Element;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -53,6 +57,7 @@ public class HomeFragment extends Fragment {
     private FloatingActionButton addrecord;
     private JSONArray result;
     View view;
+    String savedata;
 
     public HomeFragment(){
     }
@@ -90,6 +95,7 @@ public class HomeFragment extends Fragment {
                         EditText dinner =(EditText)(finalV.findViewById(R.id.dinner));
                         EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
                         prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
+                        addFoods(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
                     }
                 }).show();
 
@@ -102,7 +108,7 @@ public class HomeFragment extends Fragment {
 
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/diet.record" ;
+        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/diet.record" ;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -154,7 +160,7 @@ public class HomeFragment extends Fragment {
 
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            private FloatingActionButton item;
+            private FloatingActionButton item,delete;
             private View itemView;
             private TextView breakfast,lunch,dinner,extra,id;
 
@@ -165,6 +171,7 @@ public class HomeFragment extends Fragment {
                 itemView = v;
 //                title = (TextView)itemView.findViewById(R.id.item_article);
                 item = itemView.findViewById(R.id.homeitem);
+                delete = itemView.findViewById(R.id.homeitem_delete);
                 id=(TextView) itemView.findViewById(R.id.item_id);
                 breakfast = (TextView) itemView.findViewById(R.id.item_breakfast);
                 lunch = (TextView)itemView.findViewById(R.id.item_lunch);
@@ -195,12 +202,20 @@ public class HomeFragment extends Fragment {
                                 EditText dinner =(EditText)(finalV.findViewById(R.id.dinner));
                                 EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
                                 prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
-                                updatefoods((String) dialogid.getText(),breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
+                                updateFoods((String) dialogid.getText(),breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
 
                             }
+
                         }).show();
                     }
                 });
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deletFoods((String) id.getText());
+                    }
+                });
+
             }
         }
 
@@ -238,43 +253,88 @@ public class HomeFragment extends Fragment {
         objtoast.show();
         //在此處將飲食紀錄存入
     }
-    public void updatefoods(final String dialogid, final String breakfast, final String lunch, final String dinner, final String extra)
-    {
-        //在此處將飲食紀錄存入
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/update/"+ dialogid;
+    public void updateFoods(final String dialogid, final String breakfast,
+                            final String lunch, final String dinner, final String extra) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.PUT, JSON_URL, null, new Response.Listener<JSONArray>() {
+        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/update/"+dialogid;
+        JSONObject  object = new JSONObject ();
+        Log.v("hank",JSON_URL);
+        try {
+            object.put("breakfast",breakfast);
+            object.put("lunch",lunch);
+            object.put("dinner",dinner);
+            object.put("extra",extra);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+            Log.v("hank",object.toString());
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, JSON_URL, object, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
-                for(int i = 0; i< response.length(); i++){
-                    JSONObject j = null;
-                    try {
-                        j = response.getJSONObject(i);
-                        PostModel postModel = new PostModel();
-                        postModel.setDate(j.getString("date"));
-                        postModel.setBreakfast(j.put("breakfast",breakfast));
-                        postModel.setLunch(j.getString("lunch"));
-                        postModel.setDinner(j.getString("dinner"));
-                        postModel.setExtra(j.getString("extra"));
-                        postList.add(postModel);
-                        Log.v("hank",postList.toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-//                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-//                myAdapter = new MyAdapter(getActivity().getApplicationContext(),postList);
-//                recyclerView.setAdapter(myAdapter);
+            public void onResponse(JSONObject response) {
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("tag","onErrorResponse"+error.getMessage());
+
             }
         });
+        queue.add(jsonObjectRequest);
+        mainActivity.recreate();
+            }
 
-        queue.add(jsonArrayRequest);
+    public void addFoods(final String breakfast,
+                            final String lunch, final String dinner, final String extra) {
+        RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
+        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/insert";
+        JSONObject  object = new JSONObject ();
+        Log.v("hank",JSON_URL);
+        try {
+            object.put("breakfast",breakfast);
+            object.put("lunch",lunch);
+            object.put("dinner",dinner);
+            object.put("extra",extra);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.v("hank",object.toString());
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, JSON_URL, object, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(jsonObjectRequest);
+        mainActivity.recreate();
+    }
+
+    public void deletFoods(String id) {
+        RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
+        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/delete/"+id;
+        Log.v("hank",JSON_URL);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, JSON_URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(jsonObjectRequest);
+        mainActivity.recreate();
+    }
+
 
     }
-}
+
