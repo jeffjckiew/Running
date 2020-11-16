@@ -18,12 +18,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Formatter;
@@ -145,13 +156,13 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
         int month = c.get(Calendar.MONTH)+1;
         int day = c.get(Calendar.DAY_OF_MONTH);
         objdbr.setTitle("本次跑步資訊如下");
-        TextView rundate = (TextView)(v.findViewById(R.id.dialog_rundate));
+        final TextView rundate = (TextView)(v.findViewById(R.id.dialog_rundate));
         rundate.setText("紀錄日期"+year+"年"+month+"月"+day+"日");
-        TextView rundistance =(TextView)(v.findViewById(R.id.dialog_rundistance));
+        final TextView rundistance =(TextView)(v.findViewById(R.id.dialog_rundistance));
         rundistance.setText("距離"+showdistance.getText()+runUnit.getText());
-        TextView runspeed =(TextView)(v.findViewById(R.id.dialog_runspeed));
+        final TextView runspeed =(TextView)(v.findViewById(R.id.dialog_runspeed));
         runspeed.setText("平均配速:"+showspeed.getText());
-        TextView runtime =(TextView)(v.findViewById(R.id.dialog_runtime));
+        final TextView runtime =(TextView)(v.findViewById(R.id.dialog_runtime));
         runtime.setText("總花費時間:"+showtime.getText());
         //設定AlertDialog的View。
         objdbr.setView(v);
@@ -159,9 +170,40 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //在這邊將跑步資訊存入資料庫
+                insertRunData((String) rundate.getText(), (String) rundistance.getText(),
+                        (String)runspeed.getText(),(String)runtime.getText());
                 finish();
             }
         }).show();
+    }
+
+    private void insertRunData(String date,String rundistance,String runspeed,String runtime) {
+        RequestQueue queue = Volley.newRequestQueue(RunActivity.this.getApplicationContext());
+        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/insert";
+        JSONObject object = new JSONObject ();
+        Log.v("hank",JSON_URL);
+        try {
+            object.put("date",date);
+            object.put("distance",rundistance);
+            object.put("runtime",runtime);
+            object.put("pace",runspeed);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.v("hank",object.toString());
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, JSON_URL, object, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(jsonObjectRequest);
     }
 
 

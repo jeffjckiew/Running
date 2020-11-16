@@ -1,5 +1,6 @@
 package com.example.jogging;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,16 +21,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class RecordFragment extends Fragment {
+    private FragmentManager fragmentManager;
+    private RecordFragment record;
     private RecyclerView recyclerView;
     private RecordFragment.MyAdapter myAdapter;
-    private LinkedList<HashMap<String,String>> data;
-    AlertDialog.Builder objdbr;
+    private List<PostModelRun> postRunList;
+//    AlertDialog.Builder objdbr;
     private  MainActivity mainActivity;
 
     @Override
@@ -38,61 +56,79 @@ public class RecordFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         recyclerView = view.findViewById(R.id.record_recycleView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        myAdapter = new RecordFragment.MyAdapter();
-        doData();
-        recyclerView.setAdapter(myAdapter);
+        postRunList = new ArrayList<>();
+//        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+//        myAdapter = new RecordFragment.MyAdapter();
+        getRecord();
+//        recyclerView.setAdapter(myAdapter);
 
         return view;
     }
-    private void doData(){
+    private void getRecord(){
         //在這邊抓取資料 並塞入data中
-        data = new LinkedList<>();
-        for(int i = 0; i<5;i++){
-            HashMap<String,String> row = new HashMap<>();
-            int ran = (int)(Math.random()*100);
-            row.put("recordtitle","Record:"+ran+"recordrecordrecordrecordrecord");
-            row.put("date","Date:"+ran);
-            data.add(row);
-        }
+        RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
+        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/run.record" ;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for(int i = 0; i< response.length(); i++){
+                    JSONObject j = null;
+                    try {
+                        j = response.getJSONObject(i);
+                        PostModelRun postModelRun = new PostModelRun();
+                        postModelRun.setId(Integer.parseInt(j.getString("id")));
+                        postModelRun.setDate(j.getString("date"));
+                        postModelRun.setRuntime(j.getString("runtime"));
+                        postModelRun.setDistance(j.getString("distance"));
+                        postModelRun.setPace(j.getString("pace"));
+                        postRunList.add(postModelRun);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+                myAdapter = new MyAdapter(getActivity().getApplicationContext(),postRunList);
+                recyclerView.setAdapter(myAdapter);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag","onErrorResponse"+error.getMessage());
+            }
+        });
+
+        queue.add(jsonArrayRequest);
+
     }
 
 
 
     private class MyAdapter extends RecyclerView.Adapter<RecordFragment.MyAdapter.MyViewHolder>{
+        List<PostModelRun> postRunList;
+        public MyAdapter(Context applicationContext, List<PostModelRun> postRunList) {
+            this.postRunList = postRunList;
+        }
+
         class MyViewHolder extends RecyclerView.ViewHolder {
-            private FloatingActionButton item;
+            private FloatingActionButton deleteItem;
             private View itemView;
-            private TextView title;
+            private TextView runDate,runDataId,runTime,runPace,runDistance;
             public MyViewHolder(View v) {
                 super(v);
                 itemView = v;
-                title = itemView.findViewById(R.id.item_record);
-                item = (FloatingActionButton) itemView.findViewById(R.id.record);
-                item.setOnClickListener(new View.OnClickListener() {
+                runDate = itemView.findViewById(R.id.run_item_date);
+                runDataId = itemView.findViewById(R.id.run_item_id);
+                runTime = itemView.findViewById(R.id.run_item_time);
+                runPace = itemView.findViewById(R.id.run_item_pace);
+                runDistance = itemView.findViewById(R.id.run_item_distance);
+                deleteItem= (FloatingActionButton) itemView.findViewById(R.id.run_item_delete);
+                deleteItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO
-//                        由此處新增點選各項item後的內容顯示
-                        //TODO
-//                        由此處新增點選各項item後的內容顯示
-                        objdbr = new AlertDialog.Builder(mainActivity);
-                        LayoutInflater inflater = LayoutInflater.from(mainActivity);
-                        v = inflater.inflate(R.layout.record_dialog,null);
-                        objdbr.setTitle("此次跑步詳細資訊如下：");
-
-                        objdbr.setView(v);
-
-                        final View finalV = v;
-                        objdbr.setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //回傳輸入的值，再用Toast顯示。
-                                TextView breakfast = (TextView)(finalV.findViewById(R.id.showdistance));
-                                TextView lunch =(TextView)(finalV.findViewById(R.id.showspeed));
-                                TextView dinner =(TextView)(finalV.findViewById(R.id.showtime));
-                            }
-                        }).show();
+                        deleteRunData((String)runDataId.getText());
+                        mainActivity.reload(RecordFragment.this);
                     }
                 });
             }
@@ -110,20 +146,34 @@ public class RecordFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, final int position) {
-            holder.title.setText(data.get(position).get("recordtitle"));
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.v("hank","Click"+position);
-                }
-            });
-
+            holder.runDataId.setText(postRunList.get(position).getId()+"");
+            holder.runDate.setText(postRunList.get(position).getDate());
+            holder.runTime.setText(postRunList.get(position).getRuntime());
+            holder.runPace.setText(postRunList.get(position).getPace());
+            holder.runDistance.setText(postRunList.get(position).getDistance());
         }
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return postRunList.size();
         }
+    }
+
+    private void deleteRunData(String id ) {
+        RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
+        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/delete/"+id;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, JSON_URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(jsonObjectRequest);
     }
 
 

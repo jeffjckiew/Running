@@ -3,6 +3,7 @@ package com.example.jogging;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -123,5 +124,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void recreate() {
+        super.recreate();
+    }
 
+    public void reload(Fragment fragment){
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.detach(fragment);
+        ft.attach(fragment);
+        ft.commit();
+    }
 }
