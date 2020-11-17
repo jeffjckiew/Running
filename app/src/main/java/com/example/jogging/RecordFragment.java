@@ -47,6 +47,7 @@ public class RecordFragment extends Fragment {
     private List<PostModelRun> postRunList;
 //    AlertDialog.Builder objdbr;
     private  MainActivity mainActivity;
+    String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,8 +68,9 @@ public class RecordFragment extends Fragment {
     private void getRecord(){
         //在這邊抓取資料 並塞入data中
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/run/run.record" ;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
+//        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/run/";
+        String select_URL =JSON_URL+"run.record" ;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, select_URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 for(int i = 0; i< response.length(); i++){
@@ -161,8 +163,8 @@ public class RecordFragment extends Fragment {
 
     private void deleteRunData(String id ) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/run/delete/"+id;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, JSON_URL, null, new Response.Listener<JSONObject>() {
+        String delete_URL =JSON_URL+"delete/"+id;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, delete_URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

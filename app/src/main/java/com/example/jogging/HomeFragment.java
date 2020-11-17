@@ -44,6 +44,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class HomeFragment extends Fragment {
     private JSONArray result;
     View view;
     String savedata;
-
+    String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/";
     public HomeFragment(){
     }
 
@@ -109,8 +110,9 @@ public class HomeFragment extends Fragment {
 
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/diet.record" ;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
+//        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/";
+        String select_URL =JSON_URL+"diet.record";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, select_URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 for(int i = 0; i< response.length(); i++){
@@ -163,7 +165,7 @@ public class HomeFragment extends Fragment {
         public class MyViewHolder extends RecyclerView.ViewHolder {
             private FloatingActionButton item,delete;
             private View itemView;
-            private TextView breakfast,lunch,dinner,extra,id;
+            private TextView breakfast,lunch,dinner,extra,id,date;
 
 
 
@@ -178,7 +180,7 @@ public class HomeFragment extends Fragment {
                 lunch = (TextView)itemView.findViewById(R.id.item_lunch);
                 dinner = (TextView)itemView.findViewById(R.id.item_dinner);
                 extra = (TextView)itemView.findViewById(R.id.item_extrafood);
-
+                date = (TextView)itemView.findViewById(R.id.home_item_date);
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -240,6 +242,7 @@ public class HomeFragment extends Fragment {
             holder.lunch.setText("午餐: " + postList.get(position).getLunch());
             holder.dinner.setText("晚餐: " + postList.get(position).getDinner());
             holder.extra.setText("額外: " + postList.get(position).getExtra());
+            holder.date.setText(postList.get(position).getDate());
         }
         @Override
         public int getItemCount() {
@@ -257,7 +260,8 @@ public class HomeFragment extends Fragment {
     public void updateFoods(final String dialogid, final String breakfast,
                             final String lunch, final String dinner, final String extra) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/update/"+dialogid;
+        //        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/";
+        String update_URL =JSON_URL+"update/"+dialogid;
         JSONObject  object = new JSONObject ();
         Log.v("hank",JSON_URL);
         try {
@@ -270,7 +274,7 @@ public class HomeFragment extends Fragment {
         }
             Log.v("hank",object.toString());
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, JSON_URL, object, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, update_URL, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -288,7 +292,13 @@ public class HomeFragment extends Fragment {
     public void addFoods(final String breakfast,
                             final String lunch, final String dinner, final String extra) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/insert";
+//        String add_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/insert";
+        String add_URL =JSON_URL+"insert";
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH)+1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        String foodDate = year+"年"+month+"月"+day+"日";
         JSONObject  object = new JSONObject ();
         Log.v("hank",JSON_URL);
         try {
@@ -296,12 +306,13 @@ public class HomeFragment extends Fragment {
             object.put("lunch",lunch);
             object.put("dinner",dinner);
             object.put("extra",extra);
+            object.put("date",foodDate);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.v("hank",object.toString());
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, JSON_URL, object, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, add_URL, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -318,10 +329,11 @@ public class HomeFragment extends Fragment {
 
     public void deletFoods(String id) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/delete/"+id;
+//        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/";
+        String delet_URL =JSON_URL+"delete/"+id;
         Log.v("hank",JSON_URL);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, JSON_URL, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, delet_URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

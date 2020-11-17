@@ -61,6 +61,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
     private TextView runUnit;
     int min;
     Double pace;
+    String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/insert";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,7 +189,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
 
     private void insertRunData(String date,String rundistance,String runspeed,String runtime) {
         RequestQueue queue = Volley.newRequestQueue(RunActivity.this.getApplicationContext());
-        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/run/insert";
+
         JSONObject object = new JSONObject ();
         Log.v("hank",JSON_URL);
         try {
