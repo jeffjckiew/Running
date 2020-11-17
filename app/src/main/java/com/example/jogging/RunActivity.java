@@ -59,6 +59,8 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
     float transDistance;
     AlertDialog.Builder objdbr;
     private TextView runUnit;
+    int min;
+    Double pace;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,13 +157,20 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
         int day = c.get(Calendar.DAY_OF_MONTH);
+        Double distancef = Double.parseDouble((String) showdistance.getText());
+        if(distancef<1){
+            pace = 1/distancef/min;
+        }else{
+            pace = distancef/min;
+        }
+
         objdbr.setTitle("本次跑步資訊如下");
         final TextView rundate = (TextView)(v.findViewById(R.id.dialog_rundate));
         rundate.setText("紀錄日期"+year+"年"+month+"月"+day+"日");
         final TextView rundistance =(TextView)(v.findViewById(R.id.dialog_rundistance));
         rundistance.setText("距離"+showdistance.getText()+runUnit.getText());
         final TextView runspeed =(TextView)(v.findViewById(R.id.dialog_runspeed));
-        runspeed.setText("平均配速:"+showspeed.getText());
+        runspeed.setText("平均配速:"+pace);
         final TextView runtime =(TextView)(v.findViewById(R.id.dialog_runtime));
         runtime.setText("總花費時間:"+showtime.getText());
         //設定AlertDialog的View。
@@ -179,7 +188,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
 
     private void insertRunData(String date,String rundistance,String runspeed,String runtime) {
         RequestQueue queue = Volley.newRequestQueue(RunActivity.this.getApplicationContext());
-        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/insert";
+        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/run/insert";
         JSONObject object = new JSONObject ();
         Log.v("hank",JSON_URL);
         try {
@@ -219,6 +228,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
     private void updateSpeed(CLocation location){
         if(isRun){
         float nCurrentSpeed = 0 ;
+        float npance = 0 ;
         if(location!=null){
             location.setbUseMetricUnits(this.useMetricUnits());
             nCurrentSpeed = location.getSpeed();
@@ -233,6 +243,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
         }else{
             transRunSpeed=0;
         }
+
         fmtSpeed.format(Locale.US,"%5.2f",transRunSpeed);
         fmtDistance.format(Locale.US,"%5.2f",transDistance);
         kmDistance.format(Locale.US,"%5.2f",transDistance*1.61);
@@ -298,7 +309,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
         public void handleMessage(@NonNull Message msg) {
             if(msg.what==0){
                 int sec = ss%60;
-                int min = ss/60;
+                min = ss/60;
                 int hou = ss/3600;
                 String second = sec>9?""+sec:"0"+sec;
                 String minute = min>9?""+min:"0"+min;

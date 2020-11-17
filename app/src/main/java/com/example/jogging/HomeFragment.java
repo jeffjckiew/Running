@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
 
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/diet.record" ;
+        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/diet.record" ;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -257,7 +257,7 @@ public class HomeFragment extends Fragment {
     public void updateFoods(final String dialogid, final String breakfast,
                             final String lunch, final String dinner, final String extra) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/update/"+dialogid;
+        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/update/"+dialogid;
         JSONObject  object = new JSONObject ();
         Log.v("hank",JSON_URL);
         try {
@@ -288,7 +288,7 @@ public class HomeFragment extends Fragment {
     public void addFoods(final String breakfast,
                             final String lunch, final String dinner, final String extra) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/insert";
+        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/insert";
         JSONObject  object = new JSONObject ();
         Log.v("hank",JSON_URL);
         try {
@@ -318,7 +318,7 @@ public class HomeFragment extends Fragment {
 
     public void deletFoods(String id) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
-        String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/delete/"+id;
+        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/delete/"+id;
         Log.v("hank",JSON_URL);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, JSON_URL, null, new Response.Listener<JSONObject>() {
