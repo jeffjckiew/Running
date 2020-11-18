@@ -130,9 +130,18 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
             }
         });
         //結束按鈕事件
+        //短按
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast objtoast = Toast.makeText(RunActivity.this,"請長按兩秒以結束跑步", Toast.LENGTH_SHORT);
+                objtoast.show();
+            }
+        });
+        //長按
+        btnFinish.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
                 btnStartC.setEnabled(true);
                 isRun=false;
                 showAllDetailDialog(v);
@@ -143,8 +152,10 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
                 showtime.setText("00:00:00");
                 showdistance.setText("0.00");
                 showspeed.setText("00.00''");
+                return true;
             }
         });
+
 
     }
     //跑步結算

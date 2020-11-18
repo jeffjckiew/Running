@@ -201,11 +201,13 @@ public class HomeFragment extends Fragment {
                                 TextView dialogid = (TextView) (finalV.findViewById(R.id.dialogid));
                                 dialogid.setText(id.getText());
                                 EditText breakfast = (EditText)(finalV.findViewById(R.id.breakfast));
+                                TextView dateTV = (TextView) (finalV.findViewById(R.id.home_dialog_date));
+                                dateTV.setText(date.getText());
                                 EditText lunch =(EditText)(finalV.findViewById(R.id.lunch));
                                 EditText dinner =(EditText)(finalV.findViewById(R.id.dinner));
                                 EditText extra =(EditText)(finalV.findViewById(R.id.extrafood));
                                 prc_showmessage(breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
-                                updateFoods((String) dialogid.getText(),breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
+                                updateFoods(dateTV.getText().toString(),(String) dialogid.getText(),breakfast.getText().toString(),lunch.getText().toString(),dinner.getText().toString(),extra.getText().toString());
                                 mainActivity.reload(HomeFragment.this);
                             }
 
@@ -215,8 +217,16 @@ public class HomeFragment extends Fragment {
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Toast.makeText(mainActivity,"請長按兩秒進行刪除", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                delete.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
                         deletFoods((String) id.getText());
                         mainActivity.reload(HomeFragment.this);
+                        return true;
                     }
                 });
 
@@ -257,7 +267,7 @@ public class HomeFragment extends Fragment {
         objtoast.show();
         //在此處將飲食紀錄存入
     }
-    public void updateFoods(final String dialogid, final String breakfast,
+    public void updateFoods(final String dateTV ,final String dialogid, final String breakfast,
                             final String lunch, final String dinner, final String extra) {
         RequestQueue queue = Volley.newRequestQueue(this.getActivity().getApplicationContext());
         //        String JSON_URL ="http://10.0.102.100:8080/jogging-hibernate-spring-tx/json/";
@@ -265,6 +275,7 @@ public class HomeFragment extends Fragment {
         JSONObject  object = new JSONObject ();
         Log.v("hank",JSON_URL);
         try {
+            object.put("date",dateTV);
             object.put("breakfast",breakfast);
             object.put("lunch",lunch);
             object.put("dinner",dinner);

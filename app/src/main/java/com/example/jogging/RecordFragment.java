@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -129,10 +130,18 @@ public class RecordFragment extends Fragment {
                 deleteItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deleteRunData((String)runDataId.getText());
-                        mainActivity.reload(RecordFragment.this);
+                        Toast.makeText(mainActivity,"請長按兩秒進行刪除", Toast.LENGTH_SHORT).show();
                     }
                 });
+                deleteItem.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        deleteRunData((String)runDataId.getText());
+                        mainActivity.reload(RecordFragment.this);
+                        return true;
+                    }
+                });
+
             }
         }
 
