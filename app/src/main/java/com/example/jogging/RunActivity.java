@@ -60,6 +60,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
     AlertDialog.Builder objdbr;
     private TextView runUnit;
     int min;
+    int sec;
     Double pace;
     String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/insert";
     @Override
@@ -170,19 +171,36 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
         int month = c.get(Calendar.MONTH)+1;
         int day = c.get(Calendar.DAY_OF_MONTH);
         Double distancef = Double.parseDouble((String) showdistance.getText());
-        if(distancef<1){
-            pace = 1/distancef/min;
-        }else{
-            pace = distancef/min;
-        }
 
+//        if(distancef<1){
+//            pace = 1/distancef/min;
+//        }else{
+//            pace = distancef/min;
+//        }
+
+        if(distancef<1){
+            if(min==0){
+                pace = 1/distancef*ss/60;
+            }else{
+                pace = 1/distancef/min*ss/60;
+            }
+        }else{
+            if (min==0){
+                pace = ss/distancef;
+            }else{
+                pace = distancef/min*60/ss;
+            }
+        }
+        Formatter avgPaceTS = new Formatter(new StringBuilder());
+        avgPaceTS.format(Locale.US,"%5.2f",pace);
+        String strAvgPace = avgPaceTS.toString();
         objdbr.setTitle("本次跑步資訊如下");
         final TextView rundate = (TextView)(v.findViewById(R.id.dialog_rundate));
         rundate.setText("紀錄日期"+year+"年"+month+"月"+day+"日");
         final TextView rundistance =(TextView)(v.findViewById(R.id.dialog_rundistance));
         rundistance.setText("距離"+showdistance.getText()+runUnit.getText());
         final TextView runspeed =(TextView)(v.findViewById(R.id.dialog_runspeed));
-        runspeed.setText("平均配速:"+pace);
+        runspeed.setText("平均配速:"+strAvgPace+"''");
         final TextView runtime =(TextView)(v.findViewById(R.id.dialog_runtime));
         runtime.setText("總花費時間:"+showtime.getText());
         //設定AlertDialog的View。
@@ -320,7 +338,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
         @Override
         public void handleMessage(@NonNull Message msg) {
             if(msg.what==0){
-                int sec = ss%60;
+                sec = ss%60;
                 min = ss/60;
                 int hou = ss/3600;
                 String second = sec>9?""+sec:"0"+sec;

@@ -6,10 +6,13 @@
     android:orientation="vertical"
     android:background="@drawable/homeitem_underline"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <TextView
         android:id="@+id/home_item_date"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="紀錄日期:"
         android:textColor="#000000"
@@ -24,6 +27,31 @@
         android:gravity="left"
         android:textSize="0dp"
         />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/homeitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#E4E4E4"
+            app:pressedTranslationZ="@dimen/cardview_compat_inset_shadow"
+            app:srcCompat="@drawable/editbtn"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            app:fabSize="mini"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/homeitem_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#E4E4E4"
+            app:pressedTranslationZ="@dimen/cardview_compat_inset_shadow"
+            app:srcCompat="@drawable/deletebtn"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            app:fabSize="mini" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,25 +105,7 @@
         />
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/homeitem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="#E4E4E4"
-            app:pressedTranslationZ="@dimen/cardview_compat_inset_shadow"
-            app:srcCompat="@drawable/editbtn"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/homeitem_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="#E4E4E4"
-            app:pressedTranslationZ="@dimen/cardview_compat_inset_shadow"
-            app:srcCompat="@drawable/deletebtn"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"/>
 
 
     </LinearLayout>
