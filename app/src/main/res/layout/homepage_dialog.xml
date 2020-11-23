@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="早餐"
+        android:maxLength="8"
         />
 
     <EditText
@@ -26,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="午餐"
+        android:maxLength="8"
         />
 
     <EditText
@@ -33,6 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="晚餐"
+        android:maxLength="8"
         />
 
     <EditText
@@ -40,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="額外飲食"
+        android:maxLength="8"
         />
 
 </LinearLayout>

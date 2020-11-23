@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
     private JSONArray result;
     View view;
     String savedata;
-    String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/json/";
+    String JSON_URL ="http://10.0.103.43:8080/jogging-hibernate-spring-tx/json/";
     public HomeFragment(){
     }
 
@@ -190,10 +190,18 @@ public class HomeFragment extends Fragment {
                         LayoutInflater inflater = LayoutInflater.from(mainActivity);
                         v = inflater.inflate(R.layout.homepage_dialog,null);
                         objdbr.setTitle("更新飲食資料：");
-
+                        EditText DFbreakfast = (EditText)(v.findViewById(R.id.breakfast));
+                        DFbreakfast.setText(breakfast.getText().toString().replace("早餐:","").replace(" ",""));
+                        EditText DFlunch =(EditText)(v.findViewById(R.id.lunch));
+                        DFlunch.setText(lunch.getText().toString().replace("午餐:","".trim()).replace(" ",""));
+                        EditText DFdinner =(EditText)(v.findViewById(R.id.dinner));
+                        DFdinner.setText(dinner.getText().toString().replace("晚餐:","".trim()).replace(" ",""));
+                        EditText DFextra =(EditText)(v.findViewById(R.id.extrafood));
+                        DFextra.setText(extra.getText().toString().replace("額外:","").replace(" ",""));
                         objdbr.setView(v);
 
                         final View finalV = v;
+
                         objdbr.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

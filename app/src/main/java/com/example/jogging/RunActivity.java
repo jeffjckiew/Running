@@ -62,7 +62,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
     int min;
     int sec;
     Double pace;
-    String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/insert";
+    String JSON_URL ="http://10.0.103.43:8080/jogging-hibernate-spring-tx/run/insert";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +180,9 @@ public class RunActivity extends AppCompatActivity implements LocationListener{
 
         if(distancef<1){
             if(min==0){
-                pace = 1/distancef*ss/60;
+                if(distancef!=0){
+                    pace = 1/distancef*ss/60;
+                }else{pace=0.00;}
             }else{
                 pace = 1/distancef/min*ss/60;
             }

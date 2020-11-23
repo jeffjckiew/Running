@@ -48,7 +48,7 @@ public class RecordFragment extends Fragment {
     private List<PostModelRun> postRunList;
 //    AlertDialog.Builder objdbr;
     private  MainActivity mainActivity;
-    String JSON_URL ="http://192.168.3.25:8080/jogging-hibernate-spring-tx/run/";
+    String JSON_URL ="http://10.0.103.43:8080/jogging-hibernate-spring-tx/run/";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
